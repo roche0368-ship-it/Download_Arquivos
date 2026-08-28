@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TI INFRA - Final Ajustado</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0a0a0a;color:#e5e5e5;font-family:Arial,sans-serif}
+header{background:linear-gradient(135deg,#000,#1a0000 60%,#450a0a);color:#fff;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #dc2626}
+.wrap{max-width:1100px;margin:auto;padding:20px}
+.card{background:#141414;border:1px solid #2a2a2a;border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:0 0 20px #00000080}
+h2{margin:0 0 14px;font-size:14px;letter-spacing:.5px;text-transform:uppercase;color:#f87171;display:flex;gap:8px;align-items:center}
+label{font-size:10px;font-weight:800;text-transform:uppercase;color:#a3a3a3;display:block;margin-bottom:5px;letter-spacing:.6px}
+input,select,textarea{width:100%;background:#0a0a0a;border:1px solid #333;border-radius:8px;padding:11px;color:#fff}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#dc2626;box-shadow:0 0 0 2px #dc262633}
+textarea{min-height:80px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.btn{border:0;border-radius:8px;padding:11px 16px;font-weight:800;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.blue{background:#dc2626;color:#fff}.blue:hover{background:#b91c1c}
+.green{background:#16a34a;color:#fff}.dark{background:#262626;color:#fff;border:1px solid #404040}.gray{background:#262626;color:#e5e5e5;border:1px solid #333}.red{background:#450a0a;color:#fca5a5;border:1px solid #7f1d1d}
+.sector{border:1px solid #2a2a2a;border-radius:12px;padding:12px;background:#0f0f0f}
+.sector h3{margin:0 0 8px;font-size:12px;display:flex;justify-content:space-between;color:#e5e5e5}
+.drop{border:2px dashed #444;border-radius:10px;padding:16px;text-align:center;background:#0a0a0a;cursor:pointer;transition:.2s;color:#a3a3a3}
+.drop:hover{border-color:#dc2626;background:#1a0a0a;color:#fff}
+.mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.mitem{border:1px solid #2a2a2a;border-radius:8px;overflow:hidden;position:relative;background:#000}
+.mitem img,.mitem video{width:100%;height:110px;object-fit:cover;display:block;background:#000}
+.mitem small{display:block;padding:4px 6px;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#a3a3a3;background:#0f0f0f}
+.del{position:absolute;top:4px;right:4px;background:#dc2626;color:#fff;border:0;border-radius:50%;width:22px;height:22px;cursor:pointer;font-weight:bold}
+.sigBox{border:1px solid #2a2a2a;border-radius:12px;padding:14px;background:#0f0f0f;margin-bottom:12px}
+.sigCanvas{width:100%;height:160px;border:2px dashed #444;border-radius:10px;background:#fffff0;touch-action:none;display:block;cursor:crosshair}
+#lightbox{position:fixed;inset:0;background:rgba(0,0,0,.95);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px}
+#lightbox.show{display:flex}
+#lightbox img,#lightbox video{max-width:95vw;max-height:85vh;border-radius:10px;border:2px solid #333}
+table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid #262626;text-align:left;font-size:12px;color:#d4d4d4}th{color:#a3a3a3;text-transform:uppercase;font-size:10px}
+.empty{padding:20px;text-align:center;color:#52525b;border:1px dashed #2a2a2a;border-radius:10px}
+@media(max-width:800px){.grid2,.grid4{grid-template-columns:1fr}.mgrid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header>
+<div><b>TI INFRA • VERMELHO PRETO</b><br><small style="color:#f87171">Vídeos grandes + 2 assinaturas</small></div>
+<div><small id="hora" style="color:#a3a3a3"></small></div>
+</header>
+<div class="wrap">
+
+<div class="card" style="display:flex;gap:8px;flex-wrap:wrap">
+<button class="btn blue" onclick="novo()">＋ Nova</button>
+<button class="btn green" id="btnSalvar" onclick="salvar()">💾 Salvar instalação</button>
+<button class="btn dark" onclick="verRelatorio()">👁️ Ver relatório</button>
+<button class="btn gray" onclick="baixarHTML()">⬇️ Baixar HTML completo</button>
+</div>
+
+<div id="statusMsg" class="card" style="display:none"></div>
+
+<div class="card">
+<h2>📋 Dados da instalação</h2>
+<div class="grid2">
+<div><label>Filial *</label><input id="filial" placeholder="F0052"></div>
+<div><label>Responsável técnico (TI)</label><input id="responsavel" placeholder="Seu nome - TI"></div>
+<div><label>Gerente Regional (validação)</label><input id="gerente" placeholder="Nome do gerente que valida"></div>
+<div><label>Status</label><select id="status"><option>Em andamento</option><option>Concluída</option><option>Planejamento</option></select></div>
+<div><label>Data início</label><input id="inicio" type="date"></div>
+<div><label>Data conclusão</label><input id="fim" type="date"></div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔧 Infraestrutura</h2>
+<div class="grid4">
+<div><label>Pontos de rede</label><input id="rede" type="number" value="0"></div>
+<div><label>Pontos de energia (tomadas)</label><input id="energia" type="number" value="0"></div>
+<div><label>Switches</label><input id="switches" type="number" value="0"></div>
+<div><label>Nobreaks</label><input id="nobreaks" type="number" value="0"></div>
+<div><label>Rack/Hack</label><select id="rack"><option>Não</option><option>Sim</option></select></div>
+<div><label>Qtd Caixa</label><input id="caixas" type="number" value="0"></div>
+<div><label>Qtd Vendas</label><input id="vendas" type="number" value="0"></div>
+<div><label>Qtd Crediário</label><input id="crediario" type="number" value="0"></div>
+<div><label>Qtd Cobrança</label><input id="cobranca" type="number" value="0"></div>
+</div>
+<div style="margin-top:12px"><label>Observações</label><textarea id="obs" placeholder="Testes, organização..."></textarea></div>
+</div>
+
+<div class="card">
+<h2>📸 Fotos e vídeos por setor</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div class="sector"><h3>🗄️ Geral / Rack <span id="c-geral" style="background:#dc2626;color:#fff;padding:2px 8px;border-radius:10px;font-size:10px">0</span></h3><div class="drop" onclick="document.getElementById('f-geral').click()">📁 Anexar Geral</div><input type="file" id="f-geral" multiple accept="image/*,video/*" style="display:none" onchange="addFiles(this.files,'geral')"><div class="mgrid" id="g-geral"></div></div>
+<div class="sector"><h3>💵 Caixa <span id="c-caixa" style="background:#dc2626;color:#fff;padding:2px 8px;border-radius:10px;font-size:10px">0</span></h3><div class="drop" onclick="document.getElementById('f-caixa').click()">📁 Anexar Caixa</div><input type="file" id="f-caixa" multiple accept="image/*,video/*" style="display:none" onchange="addFiles(this.files,'caixa')"><div class="mgrid" id="g-caixa"></div></div>
+<div class="sector"><h3>🛒 Vendas <span id="c-vendas" style="background:#dc2626;color:#fff;padding:2px 8px;border-radius:10px;font-size:10px">0</span></h3><div class="drop" onclick="document.getElementById('f-vendas').click()">📁 Anexar Vendas</div><input type="file" id="f-vendas" multiple accept="image/*,video/*" style="display:none" onchange="addFiles(this.files,'vendas')"><div class="mgrid" id="g-vendas"></div></div>
+<div class="sector"><h3>💳 Crediário <span id="c-crediario" style="background:#dc2626;color:#fff;padding:2px 8px;border-radius:10px;font-size:10px">0</span></h3><div class="drop" onclick="document.getElementById('f-crediario').click()">📁 Anexar Crediário</div><input type="file" id="f-crediario" multiple accept="image/*,video/*" style="display:none" onchange="addFiles(this.files,'crediario')"><div class="mgrid" id="g-crediario"></div></div>
+<div class="sector"><h3>💰 Cobrança <span id="c-cobranca" style="background:#dc2626;color:#fff;padding:2px 8px;border-radius:10px;font-size:10px">0</span></h3><div class="drop" onclick="document.getElementById('f-cobranca').click()">📁 Anexar Cobrança</div><input type="file" id="f-cobranca" multiple accept="image/*,video/*" style="display:none" onchange="addFiles(this.files,'cobranca')"><div class="mgrid" id="g-cobranca"></div></div>
+<div class="sector"><h3>✅ Testes <span id="c-testes" style="background:#dc2626;color:#fff;padding:2px 8px;border-radius:10px;font-size:10px">0</span></h3><div class="drop" onclick="document.getElementById('f-testes').click()">📁 Anexar Testes</div><input type="file" id="f-testes" multiple accept="image/*,video/*" style="display:none" onchange="addFiles(this.files,'testes')"><div class="mgrid" id="g-testes"></div></div>
+</div>
+</div>
+
+<div class="card">
+<h2>✍️ Assinaturas (2 obrigatórias)</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+<div class="sigBox">
+<label style="color:#f87171">1 - Assinatura do Responsável Técnico (TI)</label>
+<canvas id="sigCanvas1" class="sigCanvas" width="800" height="200"></canvas>
+<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+<button class="btn gray" onclick="limparSig(1)">🧹 Limpar</button>
+<button class="btn blue" onclick="confirmarSig(1)">💾 Confirmar TI</button>
+<span id="sigInfo1" style="font-size:11px;padding:8px;color:#a3a3a3">Desenhe e confirme</span>
+</div>
+</div>
+
+<div class="sigBox" style="border-color:#7f1d1d">
+<label style="color:#fca5a5">2 - Assinatura do Gerente Regional (Validação)</label>
+<canvas id="sigCanvas2" class="sigCanvas" width="800" height="200"></canvas>
+<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+<button class="btn gray" onclick="limparSig(2)">🧹 Limpar</button>
+<button class="btn blue" style="background:#7f1d1d" onclick="confirmarSig(2)">💾 Confirmar Gerente</button>
+<span id="sigInfo2" style="font-size:11px;padding:8px;color:#a3a3a3">Desenhe e confirme</span>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="card">
+<h2>📚 Instalações salvas</h2>
+<div id="lista"></div>
+</div>
+
+</div>
+
+<div id="lightbox" onclick="this.classList.remove('show')"><div id="lbContent"></div></div>
+
+<script>
+document.getElementById('hora').textContent=new Date().toLocaleString('pt-BR');
+let setores={geral:[],caixa:[],vendas:[],crediario:[],cobranca:[],testes:[]};
+let assinatura1=null, assinatura2=null;
+let ultimoId=null; let db=null;
+function msg(t,ok=true){const el=document.getElementById('statusMsg'); el.style.display='block'; el.style.background=ok?'#14532d':'#450a0a'; el.style.border='1px solid '+(ok?'#16a34a':'#dc2626'); el.style.color=ok?'#bbf7d0':'#fecaca'; el.innerHTML=t; setTimeout(()=>el.style.display='none',5000);}
+function abrirDB(){return new Promise((resolve,reject)=>{const r=indexedDB.open('tiInfraFinalV3',1); r.onupgradeneeded=e=>{const d=e.target.result; if(!d.objectStoreNames.contains('regs')) d.createObjectStore('regs',{keyPath:'id'});}; r.onsuccess=()=>{db=r.result; resolve(db);}; r.onerror=()=>reject(r.error);});}
+abrirDB().then(()=>listar());
+
+function addFiles(fileList,setor){
+  if(!fileList.length)return;
+  let loaded=0;
+  for(const f of fileList){
+    const reader=new FileReader();
+    reader.onload=e=>{
+      setores[setor].push({id:Date.now()+Math.random(),name:f.name,type:f.type,data:e.target.result});
+      loaded++; if(loaded===fileList.length) renderSetor(setor);
+    };
+    reader.readAsDataURL(f);
+  }
+  setTimeout(()=>renderSetor(setor),600);
+}
+function renderSetor(s){
+  document.getElementById('c-'+s).textContent=setores[s].length;
+  const grid=document.getElementById('g-'+s);
+  grid.innerHTML=setores[s].map(m=>{
+    const thumb=m.type.startsWith('video')?`<video src="${m.data}" muted></video>`:`<img src="${m.data}">`;
+    return `<div class="mitem" onclick="verMidia('${s}','${m.id}')">${thumb}<small>${m.name.slice(0,18)}</small><button class="del" onclick="event.stopPropagation();remover('${s}','${m.id}')">x</button></div>`;
+  }).join('')||'<div class="empty">Nenhum</div>';
+}
+function remover(s,id){setores[s]=setores[s].filter(x=>String(x.id)!==String(id)); renderSetor(s);}
+function verMidia(s,id){const it=setores[s].find(x=>String(x.id)===String(id)); if(!it)return; const lb=document.getElementById('lbContent'); if(it.type.startsWith('video')) lb.innerHTML=`<video controls autoplay src="${it.data}" style="max-width:95vw;max-height:85vh"></video>`; else lb.innerHTML=`<img src="${it.data}" style="max-width:95vw;max-height:85vh">`; document.getElementById('lightbox').classList.add('show');}
+function renderTodos(){Object.keys(setores).forEach(renderSetor);}
+
+// Assinaturas duplas
+function setupCanvas(id){
+  const canvas=document.getElementById('sigCanvas'+id);
+  const ctx=canvas.getContext('2d');
+  ctx.lineWidth=3; ctx.lineCap='round'; ctx.strokeStyle='#000';
+  let desenhando=false, px=0, py=0;
+  function getPos(e){const r=canvas.getBoundingClientRect(); const t=e.touches?e.touches[0]:e; const sx=canvas.width/r.width; const sy=canvas.height/r.height; return {x:(t.clientX-r.left)*sx, y:(t.clientY-r.top)*sy};}
+  canvas.addEventListener('mousedown',e=>{desenhando=true; const p=getPos(e); px=p.x; py=p.y;});
+  canvas.addEventListener('mousemove',e=>{if(!desenhando)return; const p=getPos(e); ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(p.x,p.y); ctx.stroke(); px=p.x; py=p.y;});
+  window.addEventListener('mouseup',()=>desenhando=false);
+  canvas.addEventListener('touchstart',e=>{e.preventDefault(); desenhando=true; const p=getPos(e); px=p.x; py=p.y;},{passive:false});
+  canvas.addEventListener('touchmove',e=>{e.preventDefault(); if(!desenhando)return; const p=getPos(e); ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(p.x,p.y); ctx.stroke(); px=p.x; py=p.y;},{passive:false});
+  canvas.addEventListener('touchend',e=>{e.preventDefault(); desenhando=false;},{passive:false});
+  return {canvas, ctx};
+}
+const sig1=setupCanvas(1);
+const sig2=setupCanvas(2);
+
+function limparSig(n){
+  const {canvas, ctx}= n===1?sig1:sig2;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  if(n===1){assinatura1=null; document.getElementById('sigInfo1').textContent='Limpa';}
+  else {assinatura2=null; document.getElementById('sigInfo2').textContent='Limpa';}
+}
+function confirmarSig(n){
+  const {canvas}= n===1?sig1:sig2;
+  const blank=document.createElement('canvas'); blank.width=canvas.width; blank.height=canvas.height;
+  if(canvas.toDataURL()===blank.toDataURL()){msg('Desenhe a assinatura '+n+' antes!',false); return;}
+  const data=canvas.toDataURL('image/png');
+  if(n===1){assinatura1=data; document.getElementById('sigInfo1').textContent='✅ TI confirmada!'; document.getElementById('sigInfo1').style.color='#4ade80';}
+  else {assinatura2=data; document.getElementById('sigInfo2').textContent='✅ Gerente validado!'; document.getElementById('sigInfo2').style.color='#fca5a5';}
+  msg('✅ Assinatura '+n+' confirmada!');
+}
+
+async function salvar(){
+  const filial=document.getElementById('filial').value.trim(); if(!filial){alert('Digite a filial!'); return;}
+  if(!db) await abrirDB();
+  const total=Object.values(setores).flat().length;
+  const id=ultimoId||Date.now().toString();
+  const reg={
+    id, filial, responsavel:document.getElementById('responsavel').value, gerente:document.getElementById('gerente').value,
+    status:document.getElementById('status').value, inicio:document.getElementById('inicio').value, fim:document.getElementById('fim').value,
+    rede:document.getElementById('rede').value, energia:document.getElementById('energia').value,
+    switches:document.getElementById('switches').value, nobreaks:document.getElementById('nobreaks').value, rack:document.getElementById('rack').value,
+    caixas:document.getElementById('caixas').value, vendas:document.getElementById('vendas').value, crediario:document.getElementById('crediario').value, cobranca:document.getElementById('cobranca').value,
+    obs:document.getElementById('obs').value, setores:JSON.parse(JSON.stringify(setores)), total, assinatura1, assinatura2, criado:new Date().toLocaleString('pt-BR')
+  };
+  const tx=db.transaction('regs','readwrite'); tx.objectStore('regs').put(reg);
+  tx.oncomplete=()=>{ultimoId=id; msg(`✅ ${filial} SALVA! ${total} arquivo(s) • TI:${assinatura1?'OK':'falta'} • Gerente:${assinatura2?'OK':'falta'}`); listar();};
+  tx.onerror=()=>msg('Erro ao salvar',false);
+}
+function novo(){ if(!confirm('Nova instalação?'))return; ['filial','responsavel','gerente','inicio','fim','obs'].forEach(id=>{const el=document.getElementById(id); if(el) el.value='';}); ['rede','energia','switches','nobreaks','caixas','vendas','crediario','cobranca'].forEach(id=>{document.getElementById(id).value='0';}); document.getElementById('status').value='Em andamento'; document.getElementById('rack').value='Não'; setores={geral:[],caixa:[],vendas:[],crediario:[],cobranca:[],testes:[]}; renderTodos(); limparSig(1); limparSig(2); ultimoId=null; window.scrollTo({top:0,behavior:'smooth'});}
+async function listar(){ if(!db) await abrirDB(); const tx=db.transaction('regs','readonly'); const req=tx.objectStore('regs').getAll(); req.onsuccess=()=>{const regs=req.result||[]; if(!regs.length){document.getElementById('lista').innerHTML='<div class="empty">Nenhuma salva</div>';return;} document.getElementById('lista').innerHTML=`<table><thead><tr><th>Filial</th><th>Data</th><th>Arquivos</th><th>Assinaturas</th><th>Ações</th></tr></thead><tbody>${regs.reverse().map(r=>`<tr><td><b style="color:#f87171">${r.filial}</b></td><td>${r.criado}</td><td>${r.total}</td><td>TI:${r.assinatura1?'✅':'❌'} Ger:${r.assinatura2?'✅':'❌'}</td><td><button class="btn gray" onclick="carregar('${r.id}')">Abrir</button> <button class="btn dark" onclick="verRelatorioId('${r.id}')">👁️ Ver</button> <button class="btn red" onclick="excluir('${r.id}')">Excluir</button></td></tr>`).join('')}</tbody></table>`;};}
+async function carregar(id){ if(!db) await abrirDB(); const tx=db.transaction('regs','readonly'); const req=tx.objectStore('regs').get(id); req.onsuccess=()=>{const r=req.result; if(!r)return; ultimoId=r.id; document.getElementById('filial').value=r.filial||''; document.getElementById('responsavel').value=r.responsavel||''; document.getElementById('gerente').value=r.gerente||''; document.getElementById('status').value=r.status||'Em andamento'; document.getElementById('inicio').value=r.inicio||''; document.getElementById('fim').value=r.fim||''; document.getElementById('rede').value=r.rede||0; document.getElementById('energia').value=r.energia||0; document.getElementById('switches').value=r.switches||0; document.getElementById('nobreaks').value=r.nobreaks||0; document.getElementById('rack').value=r.rack||'Não'; document.getElementById('caixas').value=r.caixas||0; document.getElementById('vendas').value=r.vendas||0; document.getElementById('crediario').value=r.crediario||0; document.getElementById('cobranca').value=r.cobranca||0; document.getElementById('obs').value=r.obs||''; setores=r.setores||{geral:[],caixa:[],vendas:[],crediario:[],cobranca:[],testes:[]}; assinatura1=r.assinatura1||null; assinatura2=r.assinatura2||null; renderTodos(); if(assinatura1){const img=new Image(); img.onload=()=>{sig1.ctx.clearRect(0,0,sig1.canvas.width,sig1.canvas.height); sig1.ctx.drawImage(img,0,0,sig1.canvas.width,sig1.canvas.height);}; img.src=assinatura1; document.getElementById('sigInfo1').textContent='✅ Carregada';} if(assinatura2){const img=new Image(); img.onload=()=>{sig2.ctx.clearRect(0,0,sig2.canvas.width,sig2.canvas.height); sig2.ctx.drawImage(img,0,0,sig2.canvas.width,sig2.canvas.height);}; img.src=assinatura2; document.getElementById('sigInfo2').textContent='✅ Carregada';} window.scrollTo({top:0,behavior:'smooth'});};}
+async function excluir(id){ if(!confirm('Excluir?'))return; if(!db)await abrirDB(); const tx=db.transaction('regs','readwrite'); tx.objectStore('regs').delete(id); tx.oncomplete=()=>listar(); }
+async function verRelatorioId(id){ if(!db)await abrirDB(); const tx=db.transaction('regs','readonly'); const req=tx.objectStore('regs').get(id); req.onsuccess=()=>{if(req.result)abrirRelatorio(req.result);}; }
+function verRelatorio(){ const filial=document.getElementById('filial').value.trim(); if(!filial){alert('Preencha filial');return;} const reg={filial, responsavel:document.getElementById('responsavel').value, gerente:document.getElementById('gerente').value, status:document.getElementById('status').value, inicio:document.getElementById('inicio').value, fim:document.getElementById('fim').value, rede:document.getElementById('rede').value, energia:document.getElementById('energia').value, switches:document.getElementById('switches').value, nobreaks:document.getElementById('nobreaks').value, rack:document.getElementById('rack').value, caixas:document.getElementById('caixas').value, vendas:document.getElementById('vendas').value, crediario:document.getElementById('crediario').value, cobranca:document.getElementById('cobranca').value, obs:document.getElementById('obs').value, setores, assinatura1, assinatura2}; abrirRelatorio(reg); }
+
+// RELATÓRIO FINAL - VÍDEOS GRANDES + 2 ASSINATURAS
+function abrirRelatorio(r){
+  let html='';
+  const ordem=['geral','caixa','vendas','crediario','cobranca','testes'];
+  ordem.forEach(k=>{
+    const arr=(r.setores&&r.setores[k])||[]; if(!arr.length)return;
+    html+=`<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin:0 auto 36px;max-width:900px">`+arr.map(m=>{
+      if(m.type&&m.type.startsWith('video')){
+        return `<div style="border:1px solid #333;border-radius:12px;overflow:hidden;background:#000;width:100%"><video controls playsinline style="width:100%;height:380px;background:#000;object-fit:contain" src="${m.data}"></video></div>`;
+      } else {
+        return `<div style="border:1px solid #333;border-radius:12px;overflow:hidden;background:#000;width:100%"><img src="${m.data}" style="width:100%;height:380px;object-fit:contain;background:#000"></div>`;
+      }
+    }).join('')+`</div>`;
+  });
+  if(!html) html='<p style="color:#fca5a5;text-align:center">⚠️ Nenhuma foto/vídeo anexado</p>';
+
+  const doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Relatório ${r.filial}</title>
+  <style>
+    body{margin:0;background:#0a0a0a;color:#e5e5e5;font-family:Arial,sans-serif}
+    .top{background:linear-gradient(135deg,#000,#450a0a);padding:30px;text-align:center;border-bottom:3px solid #dc2626}
+    .top h1{margin:0;color:#fff;letter-spacing:1px;font-size:22px}
+    .top small{color:#fca5a5;display:block;margin-top:6px}
+    .content{max-width:1000px;margin:0 auto;padding:24px;text-align:center}
+    .box{background:#141414;border:1px solid #262626;border-radius:12px;padding:16px;margin:0 auto 18px;max-width:800px;text-align:left}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center}
+    .item{padding:12px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;color:#d4d4d4}
+    .item b{color:#f87171;font-size:15px}
+    .sigArea{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:800px;margin:30px auto 0}
+    .sigCard{background:#141414;border:1px solid #333;border-radius:12px;padding:18px;text-align:center}
+    .sigCard img{max-width:100%;background:#fffff0;padding:10px;border-radius:8px;min-height:100px}
+    @media(max-width:700px){.grid{grid-template-columns:1fr} .sigArea{grid-template-columns:1fr}}
+  </style></head><body>
+  <div class="top"><h1>RELATÓRIO DE INSTALAÇÃO — ${r.filial}</h1><small>TI: ${r.responsavel||'-'} | Gerente Regional: ${r.gerente||'-'} | Período: ${r.inicio||'-'} até ${r.fim||'-'} | Status: ${r.status||'-'}</small></div>
+  <div class="content">
+    <div class="box"><div class="grid"><div class="item">Pontos rede<br><b>${r.rede||0}</b></div><div class="item">Pontos energia<br><b>${r.energia||0}</b></div><div class="item">Switches<br><b>${r.switches||0}</b></div><div class="item">Nobreaks<br><b>${r.nobreaks||0}</b></div><div class="item">Rack<br><b>${r.rack||'-'}</b></div><div class="item">Caixa<br><b>${r.caixas||0}</b></div><div class="item">Vendas<br><b>${r.vendas||0}</b></div><div class="item">Crediário<br><b>${r.crediario||0}</b></div><div class="item">Cobrança<br><b>${r.cobranca||0}</b></div></div></div>
+    <div class="box"><b style="color:#f87171">Observações:</b><p style="white-space:pre-wrap;color:#d4d4d4">${r.obs||'Sem observações'}</p></div>
+    
+    <h2 style="color:#f87171;margin:28px 0 18px;letter-spacing:.5px">FOTOS E VÍDEOS DA INSTALAÇÃO</h2>
+    ${html}
+
+    <div class="sigArea">
+      <div class="sigCard"><h3 style="color:#f87171;margin-top:0">Assinatura - TI (Responsável)</h3>${r.assinatura1?`<img src="${r.assinatura1}"><p><b>${r.responsavel||''}</b><br><small style="color:#a3a3a3">Responsável Técnico</small></p>`:'<p style="color:#fca5a5">❌ Sem assinatura TI</p>'}<div style="border-top:1px solid #444;width:200px;margin:14px auto"></div></div>
+      <div class="sigCard" style="border-color:#7f1d1d"><h3 style="color:#fca5a5;margin-top:0">Assinatura - Gerente Regional (Validação)</h3>${r.assinatura2?`<img src="${r.assinatura2}"><p><b>${r.gerente||''}</b><br><small style="color:#a3a3a3">Gerente Regional - Validação</small></p>`:'<p style="color:#fca5a5">❌ Aguardando validação do Gerente</p>'}<div style="border-top:1px solid #444;width:200px;margin:14px auto"></div></div>
+    </div>
+
+    <button onclick="window.print()" style="margin-top:30px;padding:14px 26px;background:#dc2626;color:#fff;border:0;border-radius:10px;font-weight:800;cursor:pointer;font-size:14px">🖨️ Imprimir / Salvar em PDF</button>
+  </div></body></html>`;
+  const w=window.open('','_blank'); w.document.write(doc); w.document.close();
+}
+function baixarHTML(){
+  const filial=document.getElementById('filial').value.trim()||'instalacao';
+  const r={filial, responsavel:document.getElementById('responsavel').value, gerente:document.getElementById('gerente').value, status:document.getElementById('status').value, inicio:document.getElementById('inicio').value, fim:document.getElementById('fim').value, rede:document.getElementById('rede').value, energia:document.getElementById('energia').value, switches:document.getElementById('switches').value, nobreaks:document.getElementById('nobreaks').value, rack:document.getElementById('rack').value, caixas:document.getElementById('caixas').value, vendas:document.getElementById('vendas').value, crediario:document.getElementById('crediario').value, cobranca:document.getElementById('cobranca').value, obs:document.getElementById('obs').value, setores, assinatura1, assinatura2};
+  let html=''; Object.keys(r.setores||{}).forEach(k=>{const arr=r.setores[k]||[]; if(!arr.length)return; html+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">`+arr.map(m=>{if(m.type&&m.type.startsWith('video'))return `<video controls src="${m.data}" style="width:100%;height:360px;background:#000"></video>`; else return `<img src="${m.data}" style="width:100%;height:360px;object-fit:contain;background:#000">`;}).join('')+`</div>`;});
+  const doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${filial}</title></head><body style="background:#0a0a0a;color:#fff;font-family:Arial;padding:20px;text-align:center"><h1>${filial} - TI:${r.responsavel} - Gerente:${r.gerente}</h1>${html}<div style="display:flex;gap:20px;justify-content:center"><div>${r.assinatura1?`<img src="${r.assinatura1}" style="max-width:300px;background:#fffff0;padding:8px">`:''}<p>${r.responsavel}</p></div><div>${r.assinatura2?`<img src="${r.assinatura2}" style="max-width:300px;background:#fffff0;padding:8px">`:''}<p>${r.gerente}</p></div></div></body></html>`;
+  const blob=new Blob([doc],{type:'text/html'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`relatorio-${filial}-COMPLETO-2ASS.html`; a.click();
+}
+</script>
+</body>
+</html>
