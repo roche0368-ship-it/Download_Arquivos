@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Central de Conhecimento | TI</title>
+<style>
+:root{--bg:#070b09;--panel:#101714;--panel2:#141e19;--ink:#e8f5ed;--muted:#8ca397;--line:#24372d;--brand:#20d879;--brand2:#13a85b;--soft:#102e20;--danger:#ff6868;--shadow:0 12px 35px rgba(0,0,0,.28)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 75% -15%,rgba(22,180,94,.13),transparent 35%),var(--bg);color:var(--ink);font:15px/1.55 Inter,Segoe UI,Arial,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.shell{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+aside{background:linear-gradient(180deg,#0b1510,#080e0b);border-right:1px solid #1d3025;color:#e7f2ec;padding:26px 17px;display:flex;flex-direction:column;gap:25px;position:relative}aside:after{content:"";position:absolute;right:-1px;top:0;width:2px;height:180px;background:linear-gradient(transparent,var(--brand),transparent);opacity:.6}
+.brand{display:flex;align-items:center;gap:11px;padding:3px 8px}.logo{width:43px;height:43px;border-radius:13px;background:linear-gradient(135deg,#36f08a,#087b46);color:#03140a;display:grid;place-items:center;font-weight:950;font-size:19px;box-shadow:0 0 25px #19d76b44}.brand strong{display:block;font-size:15px;letter-spacing:.1px}.brand small{color:#83a493}nav{display:grid;gap:8px}nav button{border:1px solid transparent;text-align:left;background:transparent;color:#9fb5a8;padding:12px;border-radius:10px;display:flex;gap:11px;align-items:center;transition:.2s}nav button.active,nav button:hover{background:linear-gradient(90deg,#123a25,#10251a);border-color:#1b5936;color:#dfffea;box-shadow:inset 3px 0 var(--brand)}.navicon{width:20px;text-align:center;color:var(--brand)}.side-note{margin-top:auto;border:1px solid #244331;background:#0d1a12;border-radius:12px;padding:14px;color:#91a99a;font-size:12px}.side-note b{color:var(--brand)}
+main{padding:34px;max-width:1550px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:27px}.eyebrow{color:var(--brand);font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.14em}h1{font-size:30px;margin:3px 0 0;letter-spacing:-.8px}.sub{color:var(--muted);margin:4px 0 0}.actions{display:flex;gap:9px;flex-wrap:wrap}
+.btn{border:1px solid #2b4034;background:#111b15;color:#dcebe1;padding:9px 14px;border-radius:9px;font-weight:700;transition:.18s}.btn:hover{border-color:#3b7652;background:#17251c;transform:translateY(-1px)}.btn.primary{background:linear-gradient(135deg,#24df7d,#12a95b);color:#03160a;border-color:#24df7d;box-shadow:0 5px 20px #16d76b25}.btn.primary:hover{background:linear-gradient(135deg,#51f69a,#19bd69)}.btn.danger{color:#ff8989;border-color:#613333}.btn.small{padding:6px 9px;font-size:12px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:22px}.stat,.panel,.record{background:linear-gradient(145deg,#121c16,#0e1511);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}.stat{padding:18px;position:relative;overflow:hidden}.stat:after{content:"";position:absolute;width:90px;height:90px;border-radius:50%;background:#1ed8750c;right:-24px;bottom:-38px}.stat span{color:var(--muted);font-size:13px}.stat strong{display:block;font-size:29px;margin-top:3px;color:#f0fff5}.stat .symbol{float:right;background:#143523;color:var(--brand);border:1px solid #24583a;border-radius:10px;padding:7px}.panel{padding:21px}.toolbar{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap}.search{flex:1;min-width:220px;position:relative}.search input{width:100%;padding:11px 13px 11px 38px;border:1px solid var(--line);border-radius:9px;background:#0a110d;color:var(--ink)}.search span{position:absolute;left:13px;top:9px;color:var(--brand)}select,input,textarea{border:1px solid #2a3b30;border-radius:8px;padding:10px;background:#0b120e;color:var(--ink);outline:none}select:focus,input:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px #20d87918}.toolbar select{min-width:160px}
+.records{display:grid;gap:11px}.record{padding:17px;display:grid;grid-template-columns:1fr auto;gap:12px;transition:.2s}.record:hover{border-color:#386448;transform:translateY(-1px)}.record h3{margin:0 0 5px;font-size:16px;color:#effff4}.record p{margin:0;color:#91a69a;font-size:13px}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px;align-items:center}.tag{font-size:11px;font-weight:800;padding:4px 9px;border-radius:20px;background:#1b2820;color:#a9bdb0;border:1px solid #293b30}.tag.solution{background:#103322;color:#5ce99a;border-color:#1c6540}.tag.command{background:#14273a;color:#83baff;border-color:#254766}.tag.process{background:#342812;color:#f3ca70;border-color:#665020}.tag.problem{background:#351b1b;color:#ff9292;border-color:#663333}.record-actions{display:flex;gap:6px;align-items:flex-start}.empty{text-align:center;padding:55px 15px;color:var(--muted)}.empty b{display:block;color:var(--ink);font-size:16px;margin-bottom:5px}
+.view{display:none}.view.active{display:block}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:13px;font-weight:750;color:#d8e9de}.field small{color:var(--muted)}textarea{min-height:100px;resize:vertical}.formhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.formhead h2{margin:0}.detail-block{margin-top:18px;padding-top:15px;border-top:1px solid var(--line)}.detail-block h3{font-size:11px;color:var(--brand);text-transform:uppercase;letter-spacing:.1em}.detail-block p{white-space:pre-wrap;margin:7px 0;color:#d3e1d8}.code{background:#050a07;color:#8df5b3;border:1px solid #1c422b;border-radius:9px;padding:14px;white-space:pre-wrap;overflow:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace}.modalback{position:fixed;inset:0;background:#000b;backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:18px;z-index:5}.modalback.show{display:flex}.modal{background:#111b15;border:1px solid #2b4433;border-radius:15px;width:min(850px,100%);max-height:92vh;overflow:auto;padding:23px;box-shadow:0 25px 80px #0009}.modalhead{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:15px}.modalhead h2{margin:0}.close{border:1px solid var(--line);background:#1a281f;color:var(--ink);border-radius:8px;padding:7px 11px}.notice{background:#2b2411;border:1px solid #685421;color:#f0d58a;padding:12px;border-radius:9px;font-size:13px;margin-bottom:15px}
+@media(max-width:850px){.shell{grid-template-columns:1fr}aside{padding:12px;gap:12px;border-right:0;border-bottom:1px solid #1d3025}aside:after{display:none}.brand{padding:4px}nav{grid-template-columns:repeat(4,1fr)}nav button{justify-content:center;padding:9px 4px;font-size:12px;gap:5px;flex-direction:column}.side-note{display:none}main{padding:19px}.stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.top{align-items:flex-start;flex-direction:column}h1{font-size:24px}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.record{grid-template-columns:1fr}.record-actions{justify-content:flex-end}.stats{gap:9px}.stat{padding:13px}.stat strong{font-size:23px}}
+@media print{body{background:#fff;color:#111}aside,.top .actions,.toolbar,.record-actions,.btn{display:none!important}.shell{display:block}main{padding:0}.panel,.record,.stat{box-shadow:none;background:#fff;color:#111}.view{display:none!important}#detailView{display:block!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside>
+  <div class="brand"><div class="logo">TI</div><div><strong>Central de Conhecimento</strong><small>Documentação técnica</small></div></div>
+  <nav>
+    <button class="active" data-view="home"><span class="navicon">▦</span> Visão geral</button>
+    <button data-view="records"><span class="navicon">▤</span> Registros</button>
+    <button data-view="form"><span class="navicon">＋</span> Novo registro</button>
+    <button data-view="help"><span class="navicon">ⓘ</span> Sobre / backup</button>
+  </nav>
+  <div class="side-note">Organize erros, soluções, comandos e procedimentos em um só lugar.<br><br><b>Versão 1.0</b> · Armazenamento local</div>
+</aside>
+<main>
+  <section class="top">
+    <div><div class="eyebrow">Suporte • Infraestrutura • Sistemas</div><h1 id="pageTitle">Visão geral</h1><p class="sub">Registre o conhecimento técnico para consultar e reutilizar quando precisar.</p></div>
+    <div class="actions"><button class="btn" id="exportBtn">↓ Exportar backup</button><button class="btn primary" id="newBtn">＋ Novo registro</button></div>
+  </section>
+
+  <section class="view active" id="homeView">
+    <div class="stats">
+      <div class="stat"><span class="symbol">▤</span><span>Total de registros</span><strong id="totalCount">0</strong></div>
+      <div class="stat"><span class="symbol">⚠</span><span>Problemas</span><strong id="problemCount">0</strong></div>
+      <div class="stat"><span class="symbol">✓</span><span>Soluções</span><strong id="solutionCount">0</strong></div>
+      <div class="stat"><span class="symbol">⌘</span><span>Comandos</span><strong id="commandCount">0</strong></div>
+    </div>
+    <div class="panel"><div class="formhead"><div><h2>Registros recentes</h2><div class="sub">Últimos conhecimentos adicionados</div></div><button class="btn small" id="allRecordsBtn">Ver todos →</button></div><div class="records" id="recentRecords"></div></div>
+  </section>
+
+  <section class="view" id="recordsView">
+    <div class="panel">
+      <div class="toolbar">
+        <div class="search"><span>⌕</span><input id="searchInput" placeholder="Pesquisar título, erro, comando, solução..."></div>
+        <select id="typeFilter"><option value="">Todos os tipos</option><option>Problema</option><option>Solução</option><option>Comando</option><option>Procedimento</option></select>
+        <select id="categoryFilter"><option value="">Todas as categorias</option></select>
+      </div>
+      <div class="records" id="allRecords"></div>
+    </div>
+  </section>
+
+  <section class="view" id="formView">
+    <div class="panel">
+      <div class="formhead"><div><h2 id="formTitle">Cadastrar conhecimento</h2><div class="sub">Preencha o que souber. Você pode editar depois.</div></div></div>
+      <form id="recordForm">
+        <input type="hidden" id="recordId">
+        <div class="formgrid">
+          <div class="field full"><label for="title">Título *</label><input id="title" required maxlength="120" placeholder="Ex.: Erro 1789 ao adicionar usuário ao domínio"></div>
+          <div class="field"><label for="type">Tipo *</label><select id="type" required><option>Problema</option><option>Solução</option><option>Comando</option><option>Procedimento</option></select></div>
+          <div class="field"><label for="category">Categoria *</label><select id="category" required><option>Redes e infraestrutura</option><option>Windows / Active Directory</option><option>Linux / Servidores</option><option>Impressoras e periféricos</option><option>Hardware</option><option>Sistemas e aplicativos</option><option>Segurança</option><option>Scripts e automações</option><option>Outros</option></select></div>
+          <div class="field"><label for="system">Sistema / equipamento</label><input id="system" placeholder="Ex.: Windows 10, switch, impressora HP"></div>
+          <div class="field"><label for="errorCode">Código ou mensagem de erro</label><input id="errorCode" placeholder="Ex.: Erro 1789"></div>
+          <div class="field full"><label for="description">Descrição do problema / objetivo</label><textarea id="description" placeholder="O que aconteceu? Em qual equipamento, setor ou situação?"></textarea></div>
+          <div class="field full"><label for="cause">Causa identificada</label><textarea id="cause" placeholder="Qual foi a causa do problema?"></textarea></div>
+          <div class="field full"><label for="steps">Procedimento realizado / passo a passo</label><textarea id="steps" placeholder="1. Acessar...\n2. Verificar...\n3. Executar..."></textarea></div>
+          <div class="field full"><label for="commands">Comandos utilizados</label><textarea id="commands" placeholder="Cole comandos CMD, PowerShell, Linux, SQL etc."></textarea></div>
+          <div class="field full"><label for="result">Resultado / validação</label><textarea id="result" placeholder="Como confirmou que foi resolvido? O que deve funcionar agora?"></textarea></div>
+          <div class="field"><label for="technician">Técnico responsável</label><input id="technician" placeholder="Nome do técnico"></div>
+          <div class="field"><label for="date">Data</label><input id="date" type="date"></div>
+          <div class="field full"><label for="notes">Observações importantes</label><textarea id="notes" placeholder="Cuidados, dependências, riscos ou dicas para a próxima vez."></textarea></div>
+          <div class="field full"><label for="attachments">Referência de anexos (opcional)</label><input id="attachments" placeholder="Nome do arquivo, caminho da pasta ou link interno"><small>Esta versão registra referências; não envia arquivos para um servidor.</small></div>
+        </div>
+        <div class="actions" style="margin-top:19px"><button type="button" class="btn" id="cancelForm">Cancelar</button><button type="submit" class="btn primary">Salvar registro</button></div>
+      </form>
+    </div>
+  </section>
+
+  <section class="view" id="detailView">
+    <div class="panel"><div class="formhead"><div><div class="eyebrow">Ficha técnica</div><h2 id="detailTitle">Registro</h2><div class="sub" id="detailMeta"></div></div><div class="actions"><button class="btn small" id="printBtn">Imprimir</button><button class="btn small" id="editBtn">Editar</button><button class="btn small" id="backBtn">← Voltar</button></div></div><div id="detailContent"></div></div>
+  </section>
+
+  <section class="view" id="helpView">
+    <div class="panel">
+      <h2>Como funciona</h2>
+      <p>Esta é uma aplicação HTML independente. Os registros ficam salvos no armazenamento local do navegador utilizado.</p>
+      <div class="notice"><b>Atenção:</b> os dados não são enviados para a internet nem compartilhados automaticamente com outros técnicos. Se limpar os dados do navegador ou trocar de computador, poderá perder os registros. Faça backups regularmente.</div>
+      <h3>Backup e restauração</h3>
+      <p>Use <b>Exportar backup</b> para baixar um arquivo JSON com seus registros. Para restaurar, selecione um backup exportado anteriormente.</p>
+      <div class="actions"><button class="btn primary" id="backupHelpBtn">↓ Exportar backup</button><button class="btn" id="importBtn">↑ Importar backup</button><input type="file" id="importFile" accept=".json,application/json" hidden></div>
+      <div class="detail-block"><h3>Limitações desta versão</h3><p>• Não possui login nem controle de permissões.<br>• Não sincroniza entre computadores ou técnicos.<br>• Não armazena anexos; registra apenas referências.<br>• Para uso compartilhado pela equipe, será necessário hospedar a aplicação com backend e banco de dados.</p></div>
+    </div>
+  </section>
+</main>
+</div>
+
+<div class="modalback" id="confirmModal"><div class="modal" style="max-width:430px"><div class="modalhead"><h2>Excluir registro?</h2><button class="close" id="closeConfirm">✕</button></div><p>Essa ação não poderá ser desfeita. Recomendamos exportar um backup antes.</p><div class="actions" style="justify-content:flex-end"><button class="btn" id="keepRecord">Cancelar</button><button class="btn danger" id="deleteRecord">Excluir</button></div></div></div>
+
+<script>
+const KEY='central_ti_conhecimento_v1';
+let records=load(), pendingDelete=null, currentDetail=null;
+const $=id=>document.getElementById(id);
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}}
+function save(){localStorage.setItem(KEY,JSON.stringify(records))}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function typeClass(t){return ({'Problema':'problem','Solução':'solution','Comando':'command','Procedimento':'process'})[t]||''}
+function dateBR(d){if(!d)return 'Data não informada';let p=d.split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d}
+function switchView(name){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$(name+'View').classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===name));$('pageTitle').textContent=({home:'Visão geral',records:'Registros',form:'Novo registro',detail:'Detalhes do registro',help:'Sobre e backups'})[name];if(name==='records')renderRecords();window.scrollTo(0,0)}
+function card(r){return `<article class="record"><div><h3>${esc(r.title)}</h3><p>${esc((r.description||r.result||'Sem descrição cadastrada').slice(0,180))}</p><div class="meta"><span class="tag ${typeClass(r.type)}">${esc(r.type)}</span><span class="tag">${esc(r.category)}</span>${r.system?`<span class="tag">${esc(r.system)}</span>`:''}<span class="tag">${dateBR(r.date)}</span></div></div><div class="record-actions"><button class="btn small" onclick="showDetail('${r.id}')">Abrir</button><button class="btn small" onclick="editRecord('${r.id}')">Editar</button><button class="btn small danger" onclick="askDelete('${r.id}')">Excluir</button></div></article>`}
+function renderHome(){$('totalCount').textContent=records.length;$('problemCount').textContent=records.filter(r=>r.type==='Problema').length;$('solutionCount').textContent=records.filter(r=>r.type==='Solução').length;$('commandCount').textContent=records.filter(r=>r.type==='Comando').length;let recent=[...records].sort((a,b)=>(b.updated||'').localeCompare(a.updated||'')).slice(0,5);$('recentRecords').innerHTML=recent.length?recent.map(card).join(''):'<div class="empty"><b>Nenhum registro ainda</b>Comece cadastrando um problema, solução, comando ou procedimento.</div>'}
+function renderRecords(){let q=$('searchInput').value.toLowerCase(),t=$('typeFilter').value,c=$('categoryFilter').value;let list=records.filter(r=>(!t||r.type===t)&&(!c||r.category===c)&&[r.title,r.description,r.cause,r.steps,r.commands,r.result,r.system,r.errorCode,r.notes,r.technician,r.category].join(' ').toLowerCase().includes(q)).sort((a,b)=>(b.updated||'').localeCompare(a.updated||''));$('allRecords').innerHTML=list.length?list.map(card).join(''):'<div class="empty"><b>Nenhum resultado encontrado</b>Tente mudar a pesquisa ou os filtros.</div>'}
+function refreshCategories(){let cats=[...new Set(records.map(r=>r.category).filter(Boolean))].sort();let sel=$('categoryFilter'),old=sel.value;sel.innerHTML='<option value="">Todas as categorias</option>'+cats.map(c=>`<option>${esc(c)}</option>`).join('');sel.value=cats.includes(old)?old:''}
+function newRecord(){ $('recordForm').reset();$('recordId').value='';$('formTitle').textContent='Cadastrar conhecimento';$('date').value=new Date().toISOString().slice(0,10);switchView('form')}
+function editRecord(id){let r=records.find(x=>x.id===id);if(!r)return;newRecord();$('formTitle').textContent='Editar conhecimento';$('recordId').value=r.id;['title','type','category','system','errorCode','description','cause','steps','commands','result','technician','date','notes','attachments'].forEach(k=>$(k).value=r[k]||'');switchView('form')}
+function showDetail(id){let r=records.find(x=>x.id===id);if(!r)return;currentDetail=id;$('detailTitle').textContent=r.title;$('detailMeta').textContent=`${r.type} • ${r.category} • ${dateBR(r.date)} • ${r.technician||'Técnico não informado'}`;let fields=[['Descrição / objetivo',r.description],['Código ou mensagem de erro',r.errorCode],['Causa identificada',r.cause],['Procedimento realizado',r.steps],['Comandos utilizados',r.commands,'code'],['Resultado / validação',r.result],['Observações',r.notes],['Referência de anexos',r.attachments],['Sistema / equipamento',r.system]];$('detailContent').innerHTML=fields.filter(x=>x[1]).map(x=>`<div class="detail-block"><h3>${x[0]}</h3>${x[2]==='code'?`<div class="code">${esc(x[1])}</div>`:`<p>${esc(x[1])}</p>`}</div>`).join('')||'<p>Sem detalhes adicionais.</p>';switchView('detail')}
+function askDelete(id){pendingDelete=id;$('confirmModal').classList.add('show')}
+function exportBackup(){let blob=new Blob([JSON.stringify({app:'Central de Conhecimento TI',version:1,exportedAt:new Date().toISOString(),records},null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='backup-central-ti-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href)}
+function importBackup(file){let reader=new FileReader();reader.onload=()=>{try{let data=JSON.parse(reader.result),incoming=Array.isArray(data)?data:data.records;if(!Array.isArray(incoming))throw Error('Formato inválido');if(!confirm(`Importar ${incoming.length} registro(s)? Os registros serão adicionados aos atuais.`))return;let ids=new Set(records.map(r=>r.id));incoming.forEach(r=>{if(r&&r.title){if(!r.id||ids.has(r.id))r.id=crypto.randomUUID();ids.add(r.id);records.push(r)}});save();refreshCategories();renderHome();alert('Backup importado com sucesso.')}catch(e){alert('Não foi possível importar. Verifique se o arquivo é um backup JSON válido.')}};reader.readAsText(file)}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
+$('newBtn').onclick=newRecord;$('allRecordsBtn').onclick=()=>switchView('records');$('cancelForm').onclick=()=>switchView('home');$('searchInput').addEventListener('input',renderRecords);$('typeFilter').onchange=renderRecords;$('categoryFilter').onchange=renderRecords;
+$('recordForm').onsubmit=e=>{e.preventDefault();let id=$('recordId').value,old=records.find(r=>r.id===id);let r={id:id||crypto.randomUUID(),created:old?.created||new Date().toISOString(),updated:new Date().toISOString()};['title','type','category','system','errorCode','description','cause','steps','commands','result','technician','date','notes','attachments'].forEach(k=>r[k]=$(k).value.trim());if(old)records=records.map(x=>x.id===id?r:x);else records.push(r);save();refreshCategories();renderHome();switchView('home')};
+$('editBtn').onclick=()=>editRecord(currentDetail);$('backBtn').onclick=()=>switchView('records');$('printBtn').onclick=()=>window.print();
+$('closeConfirm').onclick=$('keepRecord').onclick=()=>{$('confirmModal').classList.remove('show');pendingDelete=null};$('deleteRecord').onclick=()=>{records=records.filter(r=>r.id!==pendingDelete);save();$('confirmModal').classList.remove('show');pendingDelete=null;refreshCategories();renderHome();renderRecords();if($('detailView').classList.contains('active'))switchView('records')};
+$('exportBtn').onclick=$('backupHelpBtn').onclick=exportBackup;$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=e=>{if(e.target.files[0])importBackup(e.target.files[0]);e.target.value=''};
+refreshCategories();renderHome();
+</script>
+</body>
+</html>
